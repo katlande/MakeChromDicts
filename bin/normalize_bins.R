@@ -15,7 +15,7 @@ NormalizeBins <- function(input_file, output_file=NULL, sample_names=NULL){
   res[4:ncol(res)] <- lapply(res[4:ncol(res)], as.numeric)
   # normalize:
   res[4:ncol(res)] <-
-    apply(res[4:ncol(res)], 2, function(x){
+    apply(matrix(as.numeric(as.matrix(res[4:ncol(res)]))), 2, function(x){
       return((as.numeric(x)/sum(as.numeric(x)))*1e06)
     })
   
@@ -31,6 +31,12 @@ NormalizeBins <- function(input_file, output_file=NULL, sample_names=NULL){
   
   # remove start and end from res:
   res <- res[c(1,ncol(res),4:(ncol(res)-1))]
+  
+  # add 'chr' character to the beginning of the chrom names if any numeric-only names are present;
+  # this will prevent downstream errors
+  if(any(grepl("^[0-9]+$", unique(res$chr)))){
+    res$chr <- paste0("chr", res$chr)
+  }
   
   if(is.null(output_file)){
     return(res)
