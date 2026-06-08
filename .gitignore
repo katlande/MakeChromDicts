@@ -18,3 +18,6 @@ Thumbs.db
 
 # depreciated scripts
 old_version/
+
+# server files:
+.bash-history.log

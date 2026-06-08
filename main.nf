@@ -86,33 +86,32 @@ process MULTIBAMSUMMARY {
     """
 }
 
-
 /*
 * Workflow step 2
 */
 process NORMALIZE_BINS {
     tag "all_samples"
     label 'process_medium'
-    container 'docker://rocker/tidyverse:4.4.1'
+    container 'docker://quay.io/biocontainers/pandas:1.5.2'
 
     publishDir "${params.outputPath}/bed", mode: 'copy'
 
     input:
     path bed
-    val metas
+    val  metas
 
     output:
     path "bam_summary_BPM.tsv", emit: bpm
-    val metas, emit: metas
+    val  metas, emit: metas
 
     script:
     def samples = metas.collect { it.id }.join(',')
 
     """
-    Rscript ${projectDir}/bin/normalize_bins.R \\
-        "${bed}" \\
-        "${samples}" \\
-        "bam_summary_BPM.tsv"
+    python3 ${projectDir}/bin/NormalizeBins.py \\
+        --bed "${bed}" \\
+        --samples "${samples}" \\
+        --output "bam_summary_BPM.tsv"
     """
 }
 
