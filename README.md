@@ -8,7 +8,7 @@ ChromDicts are an extremely useful datatype for whole genome analyses, but gener
 graph TD;
     A{BAM/BAI files} --> C
     B{samplesheet.csv} --> C
-    C[MultiBamSummary\nDeepTools] --> D[BPM Normalization\nR];
+    C[MultiBamSummary\nDeepTools] --> D[BPM Normalization\nPython];
     D --multithread--> E[Generate per-sample chromDicts\nR];
     D --single thread--> F[Generate per-condition chromDicts\nR];
 ```
